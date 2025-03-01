@@ -1,3 +1,6 @@
+<html lang="en">
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TEAMROHIT45OFFICIAL Streaming</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.3.5/shaka-player.compiled.min.js"></script>
@@ -40,12 +43,16 @@
   }
 </style>
 </head>
-<body><h1>TEAMROHIT45OFFICIAL Streaming</h1><div id="videoContainer">
-  <video id="video" controls autoplay></video>
+<body>
+<h1>TEAMROHIT45OFFICIAL Streaming</h1>
+<div id="videoContainer">
+  <video id="video" controls autoplay muted></video> 
   <select id="qualitySelect" onchange="changeQuality(this.value)">
     <option value="auto">Auto Quality</option>
   </select>
-</div><script>
+</div>
+
+<script>
   async function initShakaPlayer() {
       if (!shaka.Player.isBrowserSupported()) {
           console.error("Error: Your browser does not support Shaka Player.");
@@ -55,6 +62,7 @@
       const video = document.getElementById("video");
       const player = new shaka.Player(video);
 
+      // Default configuration with ABR enabled
       player.configure({
           drm: {
               clearKeys: {
@@ -64,7 +72,7 @@
           streaming: {
               bufferingGoal: 10,
               rebufferingGoal: 5,
-              abr: { enabled: true }
+              abr: { enabled: true }  // Adaptive Bitrate enabled by default
           }
       });
 
@@ -72,6 +80,12 @@
           await player.load("https://a201aivottlinear-a.akamaihd.net/OTTB/lhr-nitro/clients/dash/enc/f60kqesunw/out/v1/a435ed7a00f947deb4369b46d8f2fb70/cenc.mpd?");
           console.log("Video loaded successfully!");
           updateQualityOptions(player);
+
+          // Start playing immediately
+          video.play().catch(error => {
+              console.error("Autoplay failed:", error);
+          });
+
       } catch (error) {
           console.error("Error loading video:", error);
       }
@@ -92,27 +106,38 @@
   }
 
   function changeQuality(trackId) {
-      const player = shaka.Player.getInstance();
+      const video = document.getElementById("video");
+      const player = video ? shaka.Player.getInstance() : null;
       if (!player) return;
 
       if (trackId === "auto") {
           player.configure({ abr: { enabled: true } });
       } else {
           player.configure({ abr: { enabled: false } });
-          player.selectVariantTrack(player.getVariantTracks().find(track => track.id == trackId), true);
+          const track = player.getVariantTracks().find(t => t.id == trackId);
+          if (track) {
+              player.selectVariantTrack(track, true);
+          }
       }
   }
 
   document.addEventListener("DOMContentLoaded", initShakaPlayer);
-</script><script>
+</script>
+
+<script>
   if (confirm("Join Our Telegram Channel?")) { 
       window.location.href = "https://t.me/+3aJFsq2EJLg4NzI1"; 
   }
-</script><div id="telegramButton" onclick="redirectToTelegram()">
+</script>
+
+<div id="telegramButton" onclick="redirectToTelegram()">
   Join Telegram
-</div><script>
+</div>
+
+<script>
   function redirectToTelegram() {
       window.location.href = "https://t.me/+3aJFsq2EJLg4NzI1";
   }
-</script></body>
+</script>
+</body>
 </html>
