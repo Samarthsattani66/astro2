@@ -1,0 +1,119 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TEAMROHIT45OFFICIAL Streaming</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.3.5/shaka-player.compiled.min.js"></script>
+<style>
+  body {
+      background-color: black;
+      color: white;
+      text-align: center;
+  }
+  #videoContainer {
+      width: 80%;
+      margin: auto;
+  }
+  video {
+      width: 100%;
+      max-height: 80vh;
+  }
+  #telegramButton {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 378px;
+      height: 50px;
+      background: linear-gradient(90deg, darkblue, #001f3f);
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 20px auto;
+      font-size: 18px;
+      font-weight: bold;
+  }
+  #qualitySelect {
+      margin-top: 10px;
+      padding: 8px;
+      font-size: 16px;
+      background-color: #001f3f;
+      color: white;
+      border: none;
+      border-radius: 5px;
+  }
+</style>
+</head>
+<body><h1>TEAMROHIT45OFFICIAL Streaming</h1><div id="videoContainer">
+  <video id="video" controls autoplay></video>
+  <select id="qualitySelect" onchange="changeQuality(this.value)">
+    <option value="auto">Auto Quality</option>
+  </select>
+</div><script>
+  async function initShakaPlayer() {
+      if (!shaka.Player.isBrowserSupported()) {
+          console.error("Error: Your browser does not support Shaka Player.");
+          return;
+      }
+
+      const video = document.getElementById("video");
+      const player = new shaka.Player(video);
+
+      player.configure({
+          drm: {
+              clearKeys: {
+                  "03c2e0af2f8159f9f0ce9b5dbc865f10": "cd84ed136b0cc71f8ab8cd4d4f6a2e4c"
+              }
+          },
+          streaming: {
+              bufferingGoal: 10,
+              rebufferingGoal: 5,
+              abr: { enabled: true }
+          }
+      });
+
+      try {
+          await player.load("https://astr-crict.vercel.app/2504/default_ott.mpd?");
+          console.log("Video loaded successfully!");
+          updateQualityOptions(player);
+      } catch (error) {
+          console.error("Error loading video:", error);
+      }
+  }
+
+  function updateQualityOptions(player) {
+      const tracks = player.getVariantTracks();
+      const qualitySelect = document.getElementById("qualitySelect");
+      qualitySelect.innerHTML = '<option value="auto">Auto Quality</option>';
+      
+      tracks.forEach((track) => {
+          let label = `${track.height}p (${track.bandwidth} bps)`;
+          let option = document.createElement("option");
+          option.value = track.id;
+          option.textContent = label;
+          qualitySelect.appendChild(option);
+      });
+  }
+
+  function changeQuality(trackId) {
+      const player = shaka.Player.getInstance();
+      if (!player) return;
+
+      if (trackId === "auto") {
+          player.configure({ abr: { enabled: true } });
+      } else {
+          player.configure({ abr: { enabled: false } });
+          player.selectVariantTrack(player.getVariantTracks().find(track => track.id == trackId), true);
+      }
+  }
+
+  document.addEventListener("DOMContentLoaded", initShakaPlayer);
+</script><script>
+  if (confirm("Join Our Telegram Channel?")) { 
+      window.location.href = "https://t.me/+3aJFsq2EJLg4NzI1"; 
+  }
+</script><div id="telegramButton" onclick="redirectToTelegram()">
+  Join Telegram
+</div><script>
+  function redirectToTelegram() {
+      window.location.href = "https://t.me/+3aJFsq2EJLg4NzI1";
+  }
+</script></body>
+</html>
